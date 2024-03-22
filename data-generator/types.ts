@@ -68,3 +68,17 @@ export interface NormalVariable {
   mean: number;
   variance: number;
 };
+
+export interface StopInfo {
+  stop_id: number;
+  stop_code: number;
+  stop_name: string;
+  stop_desc: string;
+  stop_lat: number;
+  stop_lon: number;
+  stop_url: string;
+  location_type: number;
+  stop_timezone: string;
+  wheelchair_boarding: number;
+  platform_code: string;
+};

@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { DataTick } from './types';
+import { DataTick, StopInfo } from './types';
 
 const rawLines = readFileSync('./data-3-8.txt', 'utf-8').split('\n');
 const lines = rawLines.map(line => {
@@ -9,3 +9,5 @@ const lines = rawLines.map(line => {
     return undefined;
   }
 }).filter(Boolean) as DataTick[];
+
+const stopInfos = JSON.parse(readFileSync('./stop-infos.json', 'utf-8')).stopInfos as StopInfo[];
