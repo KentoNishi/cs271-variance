@@ -29,6 +29,11 @@ formdata-polyfill@^4.0.10:
   dependencies:
     fetch-blob "^3.1.2"
 
+gps-distance@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/gps-distance/-/gps-distance-0.0.4.tgz#f0b4a8172c668fdec065291a4999b961f1916d10"
+  integrity sha512-A0Y86IZW5xlozayFdF/trgWir9h3b4cU4e36llhTKzp2uDCxdZijA4ZXSYElfTdYd7fSImWVgIR3Zf0b6adrvg==
+
 node-domexception@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-domexception/-/node-domexception-1.0.0.tgz#6888db46a1f71c0b76b3f7555016b63fe64766e5"

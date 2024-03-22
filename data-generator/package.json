@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "type": "module",
   "devDependencies": {
     "@types/node": "^20.11.30",
     "typescript": "^5.4.3"
   },
   "dependencies": {
+    "gps-distance": "^0.0.4",
     "node-fetch": "^3.3.2"
   }
 }
