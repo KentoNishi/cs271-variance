@@ -4,7 +4,7 @@ import { timeToWalk } from './utils';
 import { writeFileSync } from 'fs';
 
 const rawLines = readFileSync('./data-3-8.txt', 'utf-8').split('\n');
-const lines = rawLines.map(line => {
+const lines = rawLines.map((line: string) => {
   try {
     return JSON.parse(line);
   } catch (e) {

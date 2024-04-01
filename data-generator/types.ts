@@ -82,3 +82,29 @@ export interface StopInfo {
   wheelchair_boarding: number;
   platform_code: string;
 };
+
+export interface PartialRouteInfo {
+  route_id: number;
+  agency_id: number;
+  route_short_name: string;
+  route_long_name: string;
+  route_type: number;
+  route_color: string;
+  route_text_color: string;
+  maxRouteSequence: number;
+};
+
+export interface StopTime {
+  arrival_time: number;
+  departure_time: number;
+  stop_id: number;
+  stop_sequence: number;
+  stop_headsign: string;
+  pickup_type: number;
+  drop_off_type: number;
+  timepoint: number;
+};
+
+export interface RouteInfo extends PartialRouteInfo {
+  routeStops: Record<number, StopTime[]>;
+}
