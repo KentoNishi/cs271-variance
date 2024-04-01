@@ -243,3 +243,10 @@ for (let i = 0; i < 100; i++) {
 writeFileSync('./meanTimeGrid.json', JSON.stringify(meanTimeGrid));
 writeFileSync('./varianceTimeGrid.json', JSON.stringify(varianceTimeGrid));
 writeFileSync('./graph.json', JSON.stringify(graph));
+writeFileSync('./timeGridInfo.json', JSON.stringify({
+  origin: masterOrigin,
+  topLeft: { lat: 42.383850169141745, lon: -71.13409264574024 },
+  topRight: { lat: 42.383850169141745, lon: -71.10504224250766 },
+  bottomLeft: { lat: 42.36020227811244, lon: -71.13409264574024 },
+  bottomRight: { lat: 42.36020227811244, lon: -71.10504224250766 },
+}));
