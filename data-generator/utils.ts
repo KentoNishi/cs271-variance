@@ -10,7 +10,7 @@ export const getDistance = (origin: GPS, destination: GPS): number => {
 }
 
 export const timeToWalk = (origin: GPS, destination: GPS): NormalVariable => {
-  const mean = getDistance(origin, destination) * E_SECONDS_PER_METER;
-  const variance = getDistance(origin, destination) * VAR_SECONDS_PER_METER;
+  const mean = getDistance(origin, destination) * E_SECONDS_PER_METER * 1000 * 60;
+  const variance = getDistance(origin, destination) * VAR_SECONDS_PER_METER * ((1000 * 60) ** 2);
   return { mean, variance };
 }

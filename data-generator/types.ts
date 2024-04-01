@@ -70,7 +70,7 @@ export interface NormalVariable {
 };
 
 export interface StopInfo {
-  stop_id: number;
+  stop_id: string;
   stop_code: number;
   stop_name: string;
   stop_desc: string;
