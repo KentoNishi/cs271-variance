@@ -227,14 +227,14 @@ for (let i = 0; i < 100; i++) {
       lon: -71.13409264574024 + (-71.10504224250766 + 71.13409264574024) * (j + 1) / 100,
     };
     const { distance, path } = findShortestPathBetweenGps(masterOrigin, destination);
-    meanTimeGrid[i][j] = distance;
+    meanTimeGrid[i][j] = distance / (1000);
     let variance = 0;
     // console.log(i, j, meanTimeGrid[i][j], path);
     for (let k = 0; k < path.length - 1; k++) {
       const edge = graph[path[k]].find(edge => edge.to == path[k + 1]);
       variance += edge!.varianceTime;
     }
-    varianceTimeGrid[i][j] = variance;
+    varianceTimeGrid[i][j] = variance / (1000 ** 2);
     graph = JSON.parse(JSON.stringify(originalGraph));
   }
 }
