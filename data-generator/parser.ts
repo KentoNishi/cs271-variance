@@ -45,7 +45,7 @@ for (const line of lines) {
       ];
       const key = `${x} => ${y}`;
       const diff = timestamp - oldTracker.lastUpdateTime;
-      if (Math.abs(diff) > 1000) {
+      if (Math.abs(diff) > 1000 && Math.abs(diff) < 60 * 1000 * 20) {
         if (!stopIdPairs[key]) {
           stopIdPairs[key] = [];
         }
