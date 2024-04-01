@@ -45,7 +45,7 @@ for (const line of lines) {
       ];
       const key = `${x} => ${y}`;
       const diff = timestamp - oldTracker.lastUpdateTime;
-      if (Math.abs(diff) > 1000 && Math.abs(diff) < 1000 * 60 * 30) {
+      if (Math.abs(diff) > 1000) {
         if (!stopIdPairs[key]) {
           stopIdPairs[key] = [];
         }
@@ -213,11 +213,11 @@ const findShortestPathBetweenGps = (origin: GPS, destination: GPS) => {
 // bottom right: 42.36020227811244, -71.10504224250766
 // the grid will be formed by a 100x100 matrix of points, with corners aligned (meaning the region is split into 99x99=9801 rectangles, with each corner of the rectangles corresponding to a point)
 // the increments of the grid points will be uniform
-// the origin is 42.37324310394706, -71.117658120747
+// the origin is 42.36340914857679, -71.12589555981565
 
 const meanTimeGrid: number[][] = Array(100).fill(0).map(() => Array(100).fill(0));
 const varianceTimeGrid: number[][] = Array(100).fill(0).map(() => Array(100).fill(0));
-const masterOrigin = { lat: 42.37324310394706, lon: -71.117658120747 };
+const masterOrigin = { lat: 42.36340914857679, lon: -71.12589555981565 };
 for (let i = 0; i < 100; i++) {
   console.log(i);
   for (let j = 0; j < 100; j++) {
