@@ -64,7 +64,7 @@ def plot_point(point):
     curr_var = varTimeInterpolator(point)
     # plot main line
     full_len = 2 * math.sqrt(curr_var)
-    quartile_len = 1.645 * math.sqrt(curr_var)
+    quartile_len = .6745 * math.sqrt(curr_var)
     x_center = curr_radius * math.cos(theta)
     y_center = curr_radius * math.sin(theta)
 
