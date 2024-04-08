@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.widgets import Slider
 
-# Load data
+# load data
 with open('means.json', 'r') as f:
     means_data = json.load(f)
 means_matrix = np.array(means_data)
@@ -17,7 +17,6 @@ std_matrix = np.sqrt(variances_matrix)
 z_scores = {'1%': -2.33, '25%': -0.674, '50%': 0, '75%': 0.674, '99%': 2.33}
 intervals = {percentile: means_matrix + z * std_matrix for percentile, z in z_scores.items()}
 
-# Coordinates and grid
 btm_left = [42.36020227811244, -71.13409264574024]
 top_right = [42.383850169141745, -71.10504224250766]
 grid_dim = means_matrix.shape
