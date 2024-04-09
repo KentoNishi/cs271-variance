@@ -158,7 +158,7 @@ for key1 in keys:
         for key3 in keys:
             items = categorized[key1][key2][key3]
             if len(items) > 0:
-                best[key1][key2][key3] = items[0][0][0]
+                best[key1][key2][key3] = (items[0][0][0], items[0][1][0])
 
 json.dump(remove_empty_elements(best), open('surveyGpsCoordinates.json', 'w'))
 
