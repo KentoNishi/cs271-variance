@@ -89,17 +89,21 @@ def plot_mesh(mesh, ax):
 
 
     ax.scatter(xx, 1-np.array(yy)) 
-    ax.scatter(xo, 1-np.array(yo), color='red')
+    ax.scatter(xo, 1-yo, color='red')
     return;
 
 fig, axs = plt.subplots(1,3,figsize=(28,6))
 axs[0].set_title('Original Mesh')
 axs[0].grid(True)
 plot_mesh(M, axs[0])
-axs[1].set_title('Morphed Mesh')
+axs[1].set_title('Warped Mesh')
 axs[1].grid(True)
 plot_mesh(M_T, axs[1])
 sns.heatmap(D, ax = axs[2])
+axs[2].scatter(28.2, 86.4, color='red')
+axs[2].set_xticks([])
+axs[2].set_yticks([])
+axs[2].set_title('Temporal Distance from Origin')
 plt.savefig('images/meshes.png')
 plt.show()
 
