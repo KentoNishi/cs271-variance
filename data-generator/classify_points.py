@@ -37,6 +37,7 @@ for key in categorized:
         categorized[key][key_1] = copy.deepcopy(empty)
         for key_2 in categorized[key][key_1]:
             categorized[key][key_1][key_2] = []
+empty = copy.deepcopy(categorized)
 
 t = tqdm(total=(100 // (factor))**2)
 
@@ -134,3 +135,30 @@ json.dump({
     "info": info,
     "categories": categorized,
 }, open('categorizedGpsCoordinates.json', 'w'))
+
+# save best gps coordinates for each category in json
+keys = ["A=B", "A<B", "A>B"]
+
+def remove_empty_elements(d):
+    """recursively remove empty lists, empty dicts, or None elements from a dictionary"""
+
+    def empty(x):
+        return x is None or x == {} or x == []
+
+    if not isinstance(d, (dict, list)):
+        return d
+    elif isinstance(d, list):
+        return [v for v in (remove_empty_elements(v) for v in d) if not empty(v)]
+    else:
+        return {k: v for k, v in ((k, remove_empty_elements(v)) for k, v in d.items()) if not empty(v)}
+
+best = copy.deepcopy(empty)
+for key1 in keys:
+    for key2 in keys:
+        for key3 in keys:
+            items = categorized[key1][key2][key3]
+            if len(items) > 0:
+                best[key1][key2][key3] = items[0][0][0]
+
+json.dump(remove_empty_elements(best), open('surveyGpsCoordinates.json', 'w'))
+
