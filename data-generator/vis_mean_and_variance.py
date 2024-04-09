@@ -92,5 +92,5 @@ for key1 in keys:
                 fig.tight_layout()
             # plt.suptitle(f'Dist({key1}) Mean({key2}) Var({key3})')
             Path('./images').mkdir(exist_ok=True)
-            [key1_p, key2_p, key3_p] = [key.replace('<', ' lt ').replace('=', ' eq ').replace('>', ' gt ') for key in [key1, key2, key3]]
-            plt.savefig(f'./images/{key1_p}_{key2_p}_{key3_p}.png')
+            [key1_p, key2_p, key3_p] = [key.replace('<', '-lt-').replace('=', '-eq-').replace('>', '-gt-') for key in [key1, key2, key3]]
+            plt.savefig(f'./images/{key1_p} {key2_p} {key3_p}.png')
