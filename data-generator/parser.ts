@@ -223,8 +223,8 @@ for (let i = 0; i < 100; i++) {
   for (let j = 0; j < 100; j++) {
     const originalGraph = JSON.parse(JSON.stringify(graph));
     const destination: GPS = {
-      lat: 42.383850169141745 - (42.383850169141745 - 42.36020227811244) * (i + 1) / 100,
-      lon: -71.13409264574024 + (-71.10504224250766 + 71.13409264574024) * (j + 1) / 100,
+      lat: 42.383850169141745 + (42.36020227811244 - 42.383850169141745) * (i) / (100 - 1),
+      lon: -71.13409264574024 + (-71.10504224250766 + 71.13409264574024) * (j) / (100 - 1),
     };
     const { distance, path } = findShortestPathBetweenGps(masterOrigin, destination);
     meanTimeGrid[i][j] = distance / (1000);
