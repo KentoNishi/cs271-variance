@@ -68,7 +68,9 @@ def plot_point_polar(ax, point):
     ax.plot([angle, angle], [mean_time - std_dev, mean_time + std_dev], color='red', linewidth=2)
     ax.scatter([angle], [mean_time], color='blue', zorder=5)
 
-    # Determine the radial distances for the whiskers
+    ax.text(angle, mean_time, "foo", ha='center', va='center', fontsize=10, color='black')
+
+    # Determine the radial distances for the whiskers   
     quartile_len = 0.67 * std_dev
 
     plot_whisker(mean_time - quartile_len, angle)
