@@ -132,4 +132,4 @@ dist
 *.txt
 ignore*
 
-categorizedGpsCoordinates.json
+**/categorizedGpsCoordinates.json
