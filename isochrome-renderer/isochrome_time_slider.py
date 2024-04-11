@@ -29,9 +29,10 @@ fig, ax = plt.subplots(figsize=(8, 8))
 plt.subplots_adjust(left=0.1, bottom=0.25)
 cmap = plt.get_cmap('viridis')
 norm = mcolors.Normalize(vmin=0, vmax=100)
+              
 
 # onchange for slider
-def update(val=None):
+def update(val=None, points=None, title=None):
     chosen_time = slider.val
     confidence_levels = np.zeros(means_matrix.shape)
     for percentile, interval_matrix in intervals.items():
@@ -41,6 +42,13 @@ def update(val=None):
     ax.clear()
     cf = ax.contourf(X, Y, confidence_levels, levels=[1, 25, 50, 75, 99], cmap=cmap, norm=norm, extend='both')
     
+    # plot points
+    if points is not None:
+        point1 = points[0]
+        point2 = points[1]
+        ax.scatter(point1[1], point1[0], color='white', s=75)
+        ax.scatter(point2[1], point2[0], color='white', s=75)
+    
     # remove old colorbar
     global cbar
     if cbar:
@@ -48,9 +56,14 @@ def update(val=None):
     
     cbar = fig.colorbar(cf, ax=ax, label='Confidence Level (%)')
     
-    ax.set_title(f'Isochrone Map for {chosen_time} Minutes')
+    if title:
+        ax.set_title(title)
+    else:
+        ax.set_title(f'Isochrone Map for {chosen_time} Minutes')
+        
     ax.set_xlabel('Longitude')
     ax.set_ylabel('Latitude')
+    
 
 # initial setup
 cbar = None
@@ -59,6 +72,19 @@ axtime = plt.axes([0.1, 0.1, 0.65, 0.03], facecolor=axcolor)
 slider = Slider(ax=axtime, label='Time', valmin=0, valmax=60, valinit=30, valstep=1)
 
 slider.on_changed(update)
-update()
+# update()
 
-plt.show()
+# plt.show()
+
+# load point data
+with open('../data-generator/surveyGpsCoordinates.json', 'r') as f:
+    point_data = json.load(f)
+    for geographic_comparison in point_data:
+        for temporal_mean in point_data[geographic_comparison]:
+            for temporal_variance in point_data[geographic_comparison][temporal_mean]:
+                points = point_data[geographic_comparison][temporal_mean][temporal_variance]
+                # round to 2 decimal places
+                point_text = f"({points[0][0]:.2f}, {points[0][1]:.2f}), ({points[1][0]:.2f}, {points[1][1]:.2f})"
+                title = f"{geographic_comparison}, {temporal_mean}, {temporal_variance} - {point_text}"
+                update(None, points, title)
+                plt.savefig(f"time_{geographic_comparison}, {temporal_mean}, {temporal_variance}.png")
