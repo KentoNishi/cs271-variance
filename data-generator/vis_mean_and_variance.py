@@ -99,3 +99,14 @@ for key1 in keys:
             Path('./baselines').mkdir(exist_ok=True)
             [key1_p, key2_p, key3_p] = [key.replace('<', '-lt-').replace('=', '-eq-').replace('>', '-gt-') for key in [key1, key2, key3]]
             plt.savefig(f'./baselines/{key1_p} {key2_p} {key3_p}.png', dpi=300)
+
+# save map with no A/B but only origin
+plt.cla()
+fig, axs = plt.subplots(1, 1)
+path_effects = [pe.withStroke(linewidth=4, foreground="black")]
+axs.axis('off')
+axs.imshow(mapGrid, cmap='plasma', interpolation='bilinear')
+axs.margins(x=100, y=100)
+axs.scatter(shift(origin[1]), shift(origin[0]), c='r', edgecolors='white', s=100)
+fig.tight_layout()
+plt.savefig(f'./baselines/origin.png', dpi=300)
