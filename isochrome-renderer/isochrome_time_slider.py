@@ -46,8 +46,10 @@ def update(val=None, points=None, title=None):
     if points is not None:
         point1 = points[0]
         point2 = points[1]
-        ax.scatter(point1[1], point1[0], color='white', s=75)
-        ax.scatter(point2[1], point2[0], color='white', s=75)
+        ax.scatter(point1[1], point1[0], color='red', s=75)
+        ax.text(point1[1], point1[0] + 0.0008, 'A', fontsize=12, color='red', ha='center', va='center')
+        ax.scatter(point2[1], point2[0], color='red', s=75)
+        ax.text(point2[1], point2[0] + 0.0008, 'B', fontsize=12, color='red', ha='center', va='center')
     
     # remove old colorbar
     global cbar

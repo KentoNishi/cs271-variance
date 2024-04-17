@@ -42,8 +42,13 @@ def update(val=None, points=None, title=None):
     if points is not None:
         point1 = points[0]
         point2 = points[1]
-        ax.scatter(point1[1], point1[0], color='white', s=75)
-        ax.scatter(point2[1], point2[0], color='white', s=75)
+        # Label as A
+        ax.scatter(point1[1], point1[0], color='red', s=75)
+        ax.text(point1[1], point1[0] + 0.0008, 'A', fontsize=12, color='black', ha='center', va='center')
+        # Label as B
+        ax.scatter(point2[1], point2[0], color='red', s=75)
+        ax.text(point2[1], point2[0] + 0.0008, 'B', fontsize=12, color='black', ha='center', va='center')
+        
     
     global cbar
     if cbar:
@@ -82,5 +87,5 @@ with open('../data-generator/surveyGpsCoordinates.json', 'r') as f:
                 # round to 2 decimal places
                 point_text = f"({points[0][0]:.2f}, {points[0][1]:.2f}), ({points[1][0]:.2f}, {points[1][1]:.2f})"
                 title = f"{geographic_comparison}, {temporal_mean}, {temporal_variance} - {point_text}"
-                update(None, points, title)
+                update(None, points, title)      
                 plt.savefig(f"confidence_{geographic_comparison}, {temporal_mean}, {temporal_variance}.png")
