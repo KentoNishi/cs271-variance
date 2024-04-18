@@ -54,9 +54,9 @@ def update(val=None, points=None, title=None):
         point1 = points[0]
         point2 = points[1]
         p1_scatter = ax.scatter(point1[1], point1[0], color='blue', s=100, edgecolors='white')
-        p1_text = ax.text(point1[1] + 0.0012, point1[0], 'B', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
+        p1_text = ax.text(point1[1] + 0.0012, point1[0], 'A', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
         p2_scatter = ax.scatter(point2[1], point2[0], color='blue', s=100, edgecolors='white')
-        p2_text = ax.text(point2[1] + 0.0012, point2[0], 'A', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
+        p2_text = ax.text(point2[1] + 0.0012, point2[0], 'B', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
         for artist in [p1_scatter, p1_text, p2_scatter, p2_text]:
             artist.set_clip_on(False)
         

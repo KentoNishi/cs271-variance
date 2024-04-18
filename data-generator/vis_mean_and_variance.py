@@ -23,10 +23,10 @@ def shift(x):
     return x * 1024 / 100
 
 # plot the grid
-plt.imshow(meanTimeGrid, cmap='plasma', interpolation='bilinear')
-plt.colorbar()
-plt.title('Mean Time Grid')
-plt.show()
+# plt.imshow(meanTimeGrid, cmap='plasma', interpolation='bilinear')
+# plt.colorbar()
+# plt.title('Mean Time Grid')
+# plt.show()
 
 
 # %%
@@ -36,10 +36,10 @@ with open('varianceTimeGrid.json', 'r') as f:
 
 varianceTimeGrid = np.sqrt(np.array(varianceTimeGrid))
 
-plt.imshow(varianceTimeGrid, cmap='viridis', interpolation='bilinear')
-plt.colorbar()
-plt.title('sqrt(Variance) Time Grid')
-plt.show()
+# plt.imshow(varianceTimeGrid, cmap='viridis', interpolation='bilinear')
+# plt.colorbar()
+# plt.title('sqrt(Variance) Time Grid')
+# plt.show()
 
 # info = {
 #     "origin": origin,
@@ -63,26 +63,35 @@ plt.show()
 with open('categorizedGpsCoordinates.json', 'r') as f:
     categorized = json.load(f)
 
+with open('surveyGpsCoordinates.json', 'r') as f:
+    survey = json.load(f)
+
 # get the origin
 origin = categorized['info']['originX'], categorized['info']['originY']
 keys = ["A=B", "A<B", "A>B"]
+btm_left = [42.36020227811244, -71.13409264574024]
+top_right = [42.383850169141745, -71.10504224250766]
 
 for key1 in keys:
     for key2 in keys:
         for key3 in keys:
-            items = categorized['categories'][key1][key2][key3]
-            if len(items) < 4:
+            try:
+                sampled_items = [survey[key1][key2][key3]] # [:4]
+            except KeyError:
                 continue
-            sampled_items = [items[0]] # [:4]
             plt.cla()
             fig, axs = plt.subplots(1, 1) # plt.subplots(2, 2)
-            for (((p_1, (i_1, j_1)), (p_2, (i_2, j_2))), ax) in zip(sampled_items, [axs]):
+            for ((((i_1, j_1)), ((i_2, j_2))), ax) in zip(sampled_items, [axs]):
                 # plt.cla()
                 # plt.imshow(varianceTimeGrid, cmap='viridis', interpolation='bilinear')
                 # plt.scatter(origin[1], origin[0], c='r', edgecolors='white')
                 # plt.scatter(j_1, i_1, c='b', edgecolors='white')
                 # plt.scatter(j_2, i_2, c='b', edgecolors='white')
                 # plt.show()
+                i_1 = 99 - int((i_1 - btm_left[0]) / (top_right[0] - btm_left[0]) * 99)
+                j_1 = int((j_1 - btm_left[1]) / (top_right[1] - btm_left[1]) * 99)
+                i_2 = 99 - int((i_2 - btm_left[0]) / (top_right[0] - btm_left[0]) * 99)
+                j_2 = int((j_2 - btm_left[1]) / (top_right[1] - btm_left[1]) * 99)
                 path_effects = [pe.withStroke(linewidth=4, foreground="black")]
                 ax.axis('off')
                 ax.imshow(mapGrid, cmap='plasma', interpolation='bilinear')
