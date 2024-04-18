@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import random
 from pathlib import Path
 import matplotlib.patheffects as pe
+import PIL as pil
 
 
 # read in the json file
@@ -16,6 +17,10 @@ with open('meanTimeGrid.json', 'r') as f:
 
 # convert the json object to a numpy array
 meanTimeGrid = np.array(meanTimeGrid)
+
+mapGrid = pil.Image.open('map.png')
+def shift(x):
+    return x * 1024 / 100
 
 # plot the grid
 plt.imshow(meanTimeGrid, cmap='plasma', interpolation='bilinear')
@@ -80,17 +85,28 @@ for key1 in keys:
                 # plt.show()
                 path_effects = [pe.withStroke(linewidth=4, foreground="black")]
                 ax.axis('off')
-                ax.imshow(meanTimeGrid, cmap='plasma', interpolation='bilinear')
+                ax.imshow(mapGrid, cmap='plasma', interpolation='bilinear')
                 ax.margins(x=100, y=100)
-                ax.scatter(origin[1], origin[0], c='r', edgecolors='white', s=100)
-                scatter = ax.scatter(j_1, i_1, facecolor='b', edgecolors='white', s=100)
+                ax.scatter(shift(origin[1]), shift(origin[0]), c='r', edgecolors='white', s=100)
+                scatter = ax.scatter(shift(j_1), shift(i_1), facecolor='b', edgecolors='white', s=100)
                 scatter.set_clip_on(False)
-                ax.text(j_1 + 2.5, i_1 + 3, 'A', fontsize=24, color='white', path_effects=path_effects)
-                scatter = ax.scatter(j_2, i_2, facecolor='b', edgecolors='white', s=100)
+                ax.text(shift(j_1 + 2.5), shift(i_1 + 3), 'A', fontsize=24, color='white', path_effects=path_effects)
+                scatter = ax.scatter(shift(j_2), shift(i_2), facecolor='b', edgecolors='white', s=100)
                 scatter.set_clip_on(False)
-                ax.text(j_2 + 2.5, i_2 + 2.5, 'B', fontsize=24, color='white', path_effects=path_effects)
+                ax.text(shift(j_2 + 2.5), shift(i_2 + 2.5), 'B', fontsize=24, color='white', path_effects=path_effects)
                 fig.tight_layout()
             # plt.suptitle(f'Dist({key1}) Mean({key2}) Var({key3})')
-            Path('./images').mkdir(exist_ok=True)
+            Path('./baselines').mkdir(exist_ok=True)
             [key1_p, key2_p, key3_p] = [key.replace('<', '-lt-').replace('=', '-eq-').replace('>', '-gt-') for key in [key1, key2, key3]]
-            plt.savefig(f'./images/{key1_p} {key2_p} {key3_p}.png')
+            plt.savefig(f'./baselines/{key1_p} {key2_p} {key3_p}.png', dpi=300)
+
+# save map with no A/B but only origin
+plt.cla()
+fig, axs = plt.subplots(1, 1)
+path_effects = [pe.withStroke(linewidth=4, foreground="black")]
+axs.axis('off')
+axs.imshow(mapGrid, cmap='plasma', interpolation='bilinear')
+axs.margins(x=100, y=100)
+axs.scatter(shift(origin[1]), shift(origin[0]), c='r', edgecolors='white', s=100)
+fig.tight_layout()
+plt.savefig(f'./baselines/origin.png', dpi=300)

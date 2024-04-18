@@ -30,13 +30,25 @@ cmap = plt.get_cmap('viridis')
 cnorm = mcolors.Normalize(vmin=means_matrix.min(), vmax=means_matrix.max())
 
 # update based on selected confidence level
-def update(val=None):
+def update(val=None, points=None, title=None):
     percentile = slider.val
     z = norm.ppf(percentile / 100.0)
     interval_matrix = means_matrix + z * std_matrix  # Calculate time range for the selected confidence level
     
     ax.clear()
     cf = ax.contourf(X, Y, interval_matrix, levels=np.linspace(means_matrix.min(), means_matrix.max(), num=20), cmap=cmap, norm=cnorm, extend='both')
+    
+    # plot points
+    if points is not None:
+        point1 = points[0]
+        point2 = points[1]
+        # Label as A
+        ax.scatter(point1[1], point1[0], color='red', s=75)
+        ax.text(point1[1], point1[0] + 0.0008, 'A', fontsize=12, color='black', ha='center', va='center')
+        # Label as B
+        ax.scatter(point2[1], point2[0], color='red', s=75)
+        ax.text(point2[1], point2[0] + 0.0008, 'B', fontsize=12, color='black', ha='center', va='center')
+        
     
     global cbar
     if cbar:
@@ -46,7 +58,11 @@ def update(val=None):
     cbar_ticks = np.arange(0, means_matrix.max() + 10, 10)
     cbar = fig.colorbar(cf, ax=ax, label='Time (Minutes)', ticks=cbar_ticks)
     
-    ax.set_title(f'Time Range Map at {percentile}% Confidence Level')
+    if title:
+        ax.set_title(title)
+    else:
+        ax.set_title(f'Time Range Map at {percentile}% Confidence Level')
+        
     ax.set_xlabel('Longitude')
     ax.set_ylabel('Latitude')
 
@@ -58,6 +74,18 @@ axtime = plt.axes([0.1, 0.1, 0.65, 0.03], facecolor=axcolor)
 slider = Slider(ax=axtime, label='Confidence Level (%)', valmin=1, valmax=99, valinit=50, valstep=1)
 
 slider.on_changed(update)
-update() 
+# update() 
 
-plt.show()
+# plt.show()
+
+with open('../data-generator/surveyGpsCoordinates.json', 'r') as f:
+    point_data = json.load(f)
+    for geographic_comparison in point_data:
+        for temporal_mean in point_data[geographic_comparison]:
+            for temporal_variance in point_data[geographic_comparison][temporal_mean]:
+                points = point_data[geographic_comparison][temporal_mean][temporal_variance]
+                # round to 2 decimal places
+                point_text = f"({points[0][0]:.2f}, {points[0][1]:.2f}), ({points[1][0]:.2f}, {points[1][1]:.2f})"
+                title = f"{geographic_comparison}, {temporal_mean}, {temporal_variance} - {point_text}"
+                update(None, points, title)      
+                plt.savefig(f"confidence_{geographic_comparison}, {temporal_mean}, {temporal_variance}.png")
