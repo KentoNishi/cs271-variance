@@ -36,7 +36,12 @@ def overlay_images(background_path, overlay_path, output_path, position=(0, 0), 
     
 # Get all the PNG files in the current directory, except for overlay.png
 import os
-png_files = [file for file in os.listdir(".") if file.endswith(".png") and file != "overlay.png"]
+png_files = ['./time/' + file for file in os.listdir("./time") if file.endswith(".png") and file != "overlay.png"]
 for file in png_files:
-    overlay_images(file, "overlay.png", file, transparency=0.4)
+    overlay_images(file, "overlay.png", file, transparency=0.45)
+
+png_files = ['./confidence/' + file for file in os.listdir("./confidence") if file.endswith(".png") and file != "overlay.png"]
+for file in png_files:
+    overlay_images(file, "overlay.png", file, transparency=0.45)  
+
 
