@@ -37,12 +37,12 @@ key_mapping = {"A<B": "A-lt-B", "A=B": "A-eq-B", "A>B": "A-gt-B"}
 # update based on selected confidence level
 def update(val=None, points=None, title=None):
     global cbar
-    percentile = 50
+    percentile = 90
     z = norm.ppf(percentile / 100.0)
     interval_matrix = means_matrix + z * std_matrix  # Calculate time range for the selected confidence level
     
     ax.clear()
-    cf = ax.contourf(X, Y, interval_matrix, levels=np.linspace(means_matrix.min(), means_matrix.max(), num=20), cmap=cmap, norm=cnorm, extend='both')
+    cf = ax.contourf(X, Y, interval_matrix, levels=np.linspace(means_matrix.min(), means_matrix.max(), num=100), cmap=cmap, norm=cnorm, extend='both')
     
     if cbar is not None:
         cbar.remove()
@@ -54,9 +54,9 @@ def update(val=None, points=None, title=None):
         point1 = points[0]
         point2 = points[1]
         p1_scatter = ax.scatter(point1[1], point1[0], color='blue', s=100, edgecolors='white')
-        p1_text = ax.text(point1[1] + 0.0012, point1[0], 'A', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
+        p1_text = ax.text(point1[1] + 0.0012, point1[0], 'B', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
         p2_scatter = ax.scatter(point2[1], point2[0], color='blue', s=100, edgecolors='white')
-        p2_text = ax.text(point2[1] + 0.0012, point2[0], 'B', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
+        p2_text = ax.text(point2[1] + 0.0012, point2[0], 'A', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
         for artist in [p1_scatter, p1_text, p2_scatter, p2_text]:
             artist.set_clip_on(False)
         

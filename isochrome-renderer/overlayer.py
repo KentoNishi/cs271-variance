@@ -38,10 +38,10 @@ def overlay_images(background_path, overlay_path, output_path, position=(0, 0), 
 import os
 png_files = ['./time/' + file for file in os.listdir("./time") if file.endswith(".png") and file != "overlay.png"]
 for file in png_files:
-    overlay_images(file, "overlay.png", file, transparency=0.45)
+    overlay_images(file, "overlay.png", file, transparency=0.3)
 
 png_files = ['./confidence/' + file for file in os.listdir("./confidence") if file.endswith(".png") and file != "overlay.png"]
 for file in png_files:
-    overlay_images(file, "overlay.png", file, transparency=0.45)  
+    overlay_images(file, "overlay.png", file, transparency=0.3)  
 
 

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.widgets import Slider
 import matplotlib.patheffects as path_effects
+from scipy.stats import norm
 
 # load data
 with open('means.json', 'r') as f:
@@ -15,7 +16,10 @@ with open('variances.json', 'r') as f:
 variances_matrix = np.array(variances_data)
 
 std_matrix = np.sqrt(variances_matrix)
-z_scores = {'1%': -2.33, '25%': -0.674, '50%': 0, '75%': 0.674, '99%': 2.33}
+# z_scores = {'1%': -2.33, '25%': -0.674, '50%': 0, '75%': 0.674, '99%': 2.33}
+z_scores = {}
+for i in range(1, 100):
+    z_scores[f"{i}%"] = norm.ppf(i / 100.0)
 intervals = {percentile: means_matrix + z * std_matrix for percentile, z in z_scores.items()}
 
 btm_left = [42.36020227811244, -71.13409264574024]
@@ -38,19 +42,20 @@ key_mapping = {"A<B": "A-lt-B", "A=B": "A-eq-B", "A>B": "A-gt-B"}
 # onchange for slider
 def update(val=None, points=None, title=None):
     global cbar 
-    chosen_time = 30
+    chosen_time = 45
     confidence_levels = np.zeros(means_matrix.shape)
     for percentile, interval_matrix in intervals.items():
         new_confidence_level = float(percentile[:-1])
         mask = (interval_matrix <= chosen_time) & (new_confidence_level > confidence_levels)
         confidence_levels[mask] = new_confidence_level
     ax.clear()
-    cf = ax.contourf(X, Y, confidence_levels, levels=[1, 25, 50, 75, 99], cmap=cmap, norm=norm, extend='both')
+    cf = ax.contourf(X, Y, confidence_levels, levels=np.arange(0, 101, 1), cmap=cmap, norm=norm, extend='both')
     
     # Handle colorbar creation or update
     if cbar is not None:
         cbar.remove()
     cbar = fig.colorbar(cf, ax=ax, label='Confidence Level (%)')
+    cbar.set_ticks(np.arange(0, 101, 10))
     
     # plot points
     if points is not None:
@@ -58,9 +63,9 @@ def update(val=None, points=None, title=None):
         point1 = points[0]
         point2 = points[1]
         p1_scatter = ax.scatter(point1[1], point1[0], color='blue', s=100, edgecolors='white')
-        p1_text = ax.text(point1[1] + 0.0012, point1[0], 'A', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
+        p1_text = ax.text(point1[1] + 0.0012, point1[0], 'B', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
         p2_scatter = ax.scatter(point2[1], point2[0], color='blue', s=100, edgecolors='white')
-        p2_text = ax.text(point2[1] + 0.0012, point2[0], 'B', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
+        p2_text = ax.text(point2[1] + 0.0012, point2[0], 'A', fontsize=24, color='white', ha='center', va='center', path_effects=path_effect)
         for artist in [p1_scatter, p1_text, p2_scatter, p2_text]:
             artist.set_clip_on(False)
     
