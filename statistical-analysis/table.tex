@@ -1,0 +1,48 @@
+\begin{tabular}{lllllrr}
+\toprule
+Distance &  Mean & Variance &               Method1 &                     Method2 &  OddsRatio &  PValue \\
+\midrule
+   $A=B$ & $A=B$ &    $A=B$ &              baseline &       isochrone-timecontrol &      1.121 &   1.000 \\
+   $A=B$ & $A=B$ &    $A=B$ &              baseline & isochrone-confidencecontrol &      1.000 &   1.000 \\
+   $A=B$ & $A=B$ &    $A=B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.892 &   1.000 \\
+   $A=B$ & $A=B$ &    $A<B$ &              baseline &       isochrone-timecontrol &      0.600 &   0.450 \\
+   $A=B$ & $A=B$ &    $A<B$ &              baseline & isochrone-confidencecontrol &      0.600 &   0.450 \\
+   $A=B$ & $A=B$ &    $A<B$ & isochrone-timecontrol & isochrone-confidencecontrol &      1.000 &   1.000 \\
+   $A=B$ & $A<B$ &    $A=B$ &              baseline &       isochrone-timecontrol &      6.526 &   0.003 \\
+   $A=B$ & $A<B$ &    $A=B$ &              baseline & isochrone-confidencecontrol &     13.895 &   0.000 \\
+   $A=B$ & $A<B$ &    $A=B$ & isochrone-timecontrol & isochrone-confidencecontrol &      2.129 &   0.673 \\
+   $A=B$ & $A<B$ &    $A>B$ &              baseline &       isochrone-timecontrol &      0.698 &   0.766 \\
+   $A=B$ & $A<B$ &    $A>B$ &              baseline & isochrone-confidencecontrol &      0.435 &   0.342 \\
+   $A=B$ & $A<B$ &    $A>B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.624 &   0.734 \\
+   $A=B$ & $A<B$ &    $A<B$ &              baseline &       isochrone-timecontrol &      3.625 &   0.036 \\
+   $A=B$ & $A<B$ &    $A<B$ &              baseline & isochrone-confidencecontrol &      8.000 &   0.002 \\
+   $A=B$ & $A<B$ &    $A<B$ & isochrone-timecontrol & isochrone-confidencecontrol &      2.207 &   0.477 \\
+   $A<B$ & $A=B$ &    $A=B$ &              baseline &       isochrone-timecontrol &      0.000 &   0.005 \\
+   $A<B$ & $A=B$ &    $A=B$ &              baseline & isochrone-confidencecontrol &      0.000 &   0.000 \\
+   $A<B$ & $A=B$ &    $A=B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.646 &   0.592 \\
+   $A<B$ & $A=B$ &    $A>B$ &              baseline &       isochrone-timecontrol &      0.698 &   0.766 \\
+   $A<B$ & $A=B$ &    $A>B$ &              baseline & isochrone-confidencecontrol &      0.435 &   0.342 \\
+   $A<B$ & $A=B$ &    $A>B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.624 &   0.734 \\
+   $A<B$ & $A=B$ &    $A<B$ &              baseline &       isochrone-timecontrol &      5.712 &   0.045 \\
+   $A<B$ & $A=B$ &    $A<B$ &              baseline & isochrone-confidencecontrol &      1.000 &   1.000 \\
+   $A<B$ & $A=B$ &    $A<B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.175 &   0.045 \\
+   $A<B$ & $A>B$ &    $A=B$ &              baseline &       isochrone-timecontrol &        NaN &   1.000 \\
+   $A<B$ & $A>B$ &    $A=B$ &              baseline & isochrone-confidencecontrol &      0.000 &   0.025 \\
+   $A<B$ & $A>B$ &    $A=B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.000 &   0.025 \\
+   $A<B$ & $A>B$ &    $A>B$ &              baseline &       isochrone-timecontrol &      0.021 &   0.000 \\
+   $A<B$ & $A>B$ &    $A>B$ &              baseline & isochrone-confidencecontrol &      0.010 &   0.000 \\
+   $A<B$ & $A>B$ &    $A>B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.481 &   0.371 \\
+   $A<B$ & $A>B$ &    $A<B$ &              baseline &       isochrone-timecontrol &      4.267 &   0.062 \\
+   $A<B$ & $A>B$ &    $A<B$ &              baseline & isochrone-confidencecontrol &      8.982 &   0.001 \\
+   $A<B$ & $A>B$ &    $A<B$ & isochrone-timecontrol & isochrone-confidencecontrol &      2.105 &   0.216 \\
+   $A<B$ & $A<B$ &    $A=B$ &              baseline &       isochrone-timecontrol &      4.889 &   0.084 \\
+   $A<B$ & $A<B$ &    $A=B$ &              baseline & isochrone-confidencecontrol &     10.074 &   0.028 \\
+   $A<B$ & $A<B$ &    $A=B$ & isochrone-timecontrol & isochrone-confidencecontrol &      2.061 &   1.000 \\
+   $A<B$ & $A<B$ &    $A>B$ &              baseline &       isochrone-timecontrol &      0.451 &   0.265 \\
+   $A<B$ & $A<B$ &    $A>B$ &              baseline & isochrone-confidencecontrol &      0.364 &   0.153 \\
+   $A<B$ & $A<B$ &    $A>B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.806 &   1.000 \\
+   $A<B$ & $A<B$ &    $A<B$ &              baseline &       isochrone-timecontrol &        inf &   0.493 \\
+   $A<B$ & $A<B$ &    $A<B$ &              baseline & isochrone-confidencecontrol &        inf &   0.493 \\
+   $A<B$ & $A<B$ &    $A<B$ & isochrone-timecontrol & isochrone-confidencecontrol &        NaN &   1.000 \\
+\bottomrule
+\end{tabular}
