@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import RegularGridInterpolator
 
+key_mapping = {"A<B": "A-lt-B", "A=B": "A-eq-B", "A>B": "A-gt-B"}
+
 # read the thing
 def read_and_convert(filename):
     with open(filename, 'r') as file:
@@ -93,8 +95,10 @@ def plot(queries, path):
         print(angle)
 
         # Interpolate mean time and variance
-        mean_time = meanTimeInterpolator(point)
-        variance = varTimeInterpolator(point)
+        # point latitude is diffed from the wrong side, so invert it by subtracting from the latitude of the top right
+        point_corrected = [btm_left[0] + (top_right[0] - point[0]), point[1]]
+        mean_time = meanTimeInterpolator(point_corrected)
+        variance = varTimeInterpolator(point_corrected)
         std_dev = math.sqrt(variance)
 
         # Main line properties
@@ -142,7 +146,7 @@ def plot(queries, path):
         # Create polar plot
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
     title = " -> ".join(path)
-    plt.title(title)
+    # plt.title(title)
 
     # put red dot in middle of plot
     ax.scatter([0], [0], color='red', zorder=5)
@@ -171,7 +175,9 @@ def plot(queries, path):
     ax.set_ylim(0, max_rad_ceiled)
 
     # plt.show()
-    filename = "_".join(path) + ".png"
+    filename = " ".join(path) + ".png"
+    for item in key_mapping:
+        filename = filename.replace(item, key_mapping[item])
     fig.savefig(filename)
 
 
