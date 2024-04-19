@@ -19,8 +19,7 @@ tasks = [
     ["$A<B$", "$A<B$", "$A<B$"],
 ]
 
-flip_a_b = ["baseline", "isochrone_timecontrol", "isochrone_confidencecontrol"]
-methods = ["baseline", "isochrone_timecontrol", "isochrone_confidencecontrol"]
+methods = ["baseline", "iso_time", "iso_conf"]
 
 for task in methods:
     baseline = pd.read_csv(f"{task}.csv")
@@ -46,29 +45,84 @@ for task in methods:
 
 from scipy.stats import fisher_exact, chi2_contingency
 
-def flip(letter, method):
-    return ("A" if letter == "B" else "B") if method in flip_a_b else letter
+flip_a_b = [
+    ["baseline", 0],
+    ["iso_time", 0],
+    ["iso_conf", 0],
+    ["baseline", 1],
+    ["iso_time", 1],
+    ["iso_conf", 1],
+    ["baseline", 2],
+    ["iso_time", 2],
+    ["iso_conf", 2],
+    ["baseline", 4],
+    ["iso_time", 4],
+    ["iso_conf", 4],
+    ["baseline", 5],
+    ["iso_time", 5],
+    ["iso_conf", 5],
+    ["baseline", 8],
+    ["iso_time", 8],
+    ["iso_conf", 8],
+    ["baseline", 9],
+    ["iso_time", 9],
+    ["iso_conf", 9],
+    ["baseline", 11],
+    ["iso_time", 11],
+    ["iso_conf", 11],
+    ["baseline", 13],
+    ["iso_time", 13],
+    ["iso_conf", 13],
+]
+
+def some(arr, func):
+    for item in arr:
+        if func(item):
+            return True
+    return False
+
+def flip(letter, task, method):
+    return ("A" if letter == "B" else "B") if some(flip_a_b, lambda x: x[0] == method and x[1] == tasks.index(task)) else letter
+
+def num_letters_different(str1, str2):
+    return sum([1 for i in range(len(str1)) if str1[i] != str2[i]])
 
 table = []
-for i in range(14):
-    for j in range(len(methods) - 1):
-        for k in range(j + 1, len(methods)):
-            A1 = results[i][methods[j]][flip("A", methods[j])]
-            B1 = results[i][methods[j]][flip("B", methods[j])]
-            A2 = results[i][methods[k]][flip("A", methods[k])]
-            B2 = results[i][methods[k]][flip("B", methods[k])]
-            # don't use chi2_contingency since there can be 0 values
-            # instead, use fisher's exact test
-            # chi2, p, dof, expected = chi2_contingency([[A1, B1], [A2, B2]])
+for i_1 in range(14):
+    num = 0
+    # for j in range(0, len(methods)):
+    #     A1 = results[i_1][methods[0]][flip("A", methods[j])]
+    #     B1 = results[i_1][methods[0]][flip("B", methods[j])]
+    #     A2 = results[i_1][methods[j]][flip("A", methods[j])]
+    #     B2 = results[i_1][methods[j]][flip("B", methods[j])]
+    #     try:
+    #         # try chi squared test
+    #         _, p, _, _ = chi2_contingency([[A1, B1], [A2, B2]])
+    #     except ValueError:
+    #         odds, p = fisher_exact([[A1, B1], [A2, B2]])
+    #     table.append({
+    #         "Task": tasks[i_1],
+    #         "Method1": methods[j],
+    #         "Method2": methods[j],
+    #         # "OddsRatio": odds,
+    #         "PValue": p
+    #     })
+    #     num += 1
+    for j_1 in range(0, len(methods)):
+        for j_2 in range(j_1 + 1, len(methods)):
+            A1 = results[i_1][methods[j_1]][flip("A", tasks[i_1], methods[j_1])]
+            B1 = results[i_1][methods[j_1]][flip("B", tasks[i_1], methods[j_1])]
+            A2 = results[i_1][methods[j_2]][flip("A", tasks[i_1], methods[j_2])]
+            B2 = results[i_1][methods[j_2]][flip("B", tasks[i_1], methods[j_2])]
             odds, p = fisher_exact([[A1, B1], [A2, B2]])
             table.append({
-                "Task": tasks[i],
-                "Method1": methods[j],
-                "Method2": methods[k],
-                "OddsRatio": odds,
+                "Task": tasks[i_1],
+                "Method1": methods[j_1],
+                "Method2": methods[j_2],
+                # "OddsRatio": odds,
                 "PValue": p
             })
-
+            num += 1
 # print(table)
 # print statistically significant results
 # for i, row in enumerate(table):
@@ -87,20 +141,21 @@ def get_index(task):
 
 table_df = pd.DataFrame([{
     **item,
-    "Distance": item["Task"][0],
+    "Dist": item["Task"][0],
     "Mean": item["Task"][1],
-    "Variance": item["Task"][2],
+    "Var": item["Task"][2],
     "Method1": item["Method1"].replace("_", "-"),
     "Method2": item["Method2"].replace("_", "-"),
-    "M1A": results[get_index(item["Task"])][item["Method1"]][flip("A", item["Method1"])],
-    "M1B": results[get_index(item["Task"])][item["Method1"]][flip("B", item["Method1"])],
-    "M2A": results[get_index(item["Task"])][item["Method2"]][flip("A", item["Method1"])],
-    "M2B": results[get_index(item["Task"])][item["Method2"]][flip("B", item["Method1"])],
+    "M1A": results[get_index(item["Task"])][item["Method1"]][flip("A", item["Task"], item["Method1"])],
+    "M1B": results[get_index(item["Task"])][item["Method1"]][flip("B", item["Task"], item["Method1"])],
+    "M2A": results[get_index(item["Task"])][item["Method2"]][flip("A", item["Task"], item["Method1"])],
+    "M2B": results[get_index(item["Task"])][item["Method2"]][flip("B", item["Task"], item["Method1"])],
 } for item in table])
 
 # table_df.to_latex("table.tex", encoding='utf-8', escape=False, index=False, columns=["Distance", "Mean", "Variance", "Method1", "Method2", "OddsRatio", "PValue"], float_format="%.3f")
 
-table_tex = table_df.to_latex(index=False, columns=["Distance", "Mean", "Variance", "Method1", "Method2", "M1A", "M1B", "M2A", "M2B", "OddsRatio", "PValue"], float_format="%.3f", escape=False)
+# "Dist2", "Mean2", "Var2", 
+table_tex = table_df.to_latex(index=False, columns=["Dist", "Mean", "Var", "Method1", "M1A", "M1B", "Method2", "M2A", "M2B", "PValue"], float_format="%.3f", escape=False)
 # print(table_tex)
 
 # \begin{tabular}{lllllrr}
@@ -120,22 +175,47 @@ table_tex = table_df.to_latex(index=False, columns=["Distance", "Mean", "Varianc
 # add a \midrule after every block of 3 lines
 # also only keep the middle line for the leftmost 3 columns
 table_lines = table_tex.split("\n")
-for i in range(4, len(table_lines) - 5, 3):
-    table_lines[i + 2] = table_lines[i] + "\\midrule"
-    # table_lines[i] = "   & & &" + "&".join(table_lines[i].split("&")[3:])
-    # table_lines[i + 2] = "   & & &" + "&".join(table_lines[i + 2].split("&")[3:])
+# for i in range(4, len(table_lines) - num + 1, num):
+#     # table_lines[i - 1] = table_lines[i - 1] + "\\vspace{0.1cm}"
+#     # add \cellcolor{gray!20} to the 4th, 5th, and 6th columns of the ith line
+#     # table_lines[i] = "&".join(table_lines[i].split("&")[:3]) + "&" + "&".join(["\\cellcolor{gray!20}" + x for x in table_lines[i].split("&")[3:6]]) + "&" + "&".join(table_lines[i].split("&")[6:])
+#     # do the same for the next line
+#     # table_lines[i + 1] = "&".join(table_lines[i + 1].split("&")[:3]) + "&" + "&".join(["\\cellcolor{gray!20}" + x for x in table_lines[i + 1].split("&")[3:6]]) + "&" + "&".join(table_lines[i + 1].split("&")[6:])
+#     # color the 1st, 2nd, 3rd, 4th, 5th, and 6th columns of the next line
+#     # table_lines[i + 2] = "&".join(["\\cellcolor{gray!20}" + x for x in table_lines[i].split("&")[0:6]]) + "&" + "&".join(table_lines[i].split("&")[6:])
+#     # table_lines[i + 1] = table_lines[i + 1] + "\\hline"
+#     table_lines[i + num - 6] = "% " + table_lines[i + num - 6]
+#     table_lines[i + num - 5] = "% " + table_lines[i + num - 5]
+#     table_lines[i + num - 4] = "% " + table_lines[i + num - 4] + "\\hdashline"
+#     table_lines[i + num - 1] = table_lines[i + num - 1] + "\\hline"
+#     # table_lines[i] = "   & & &" + "&".join(table_lines[i].split("&")[3:])
+#     # table_lines[i + 2] = "   & & &" + "&".join(table_lines[i + 2].split("&")[3:])
 
-# for statistically significant lines, add \rowcolor{lightgray}
+# for statistically significant lines, add \rowcolor{gray!20}
 for i in range(len(table_lines)):
     try:
         p = float(table_lines[i].split("&")[-1].split("\\")[0].strip())
         if p < 0.05:
-            table_lines[i] = "\\rowcolor{yellow} " + table_lines[i]
+            split_by_and = table_lines[i].split("&")
+            table_lines[i] = "&".join(split_by_and[:-1] + [" \\textbf{" + split_by_and[-1] + "}"])
     except ValueError:
         pass
 
 table_tex = "\n".join(table_lines)
 table_tex = table_tex.replace("tabular", "longtable")
-table_tex = table_tex.replace("lllllrrrrrr", "ccc|ll|cccccc")
-print(table_tex)
-
+# table_tex = table_tex.replace("lllllllrrlrrr", "ccc|ccc||lcc|lcc||c")
+table_tex = table_tex.replace("llllrrlrrr", "ccc||ccc|ccc||c")
+table_tex = table_tex.replace("inf", "$\infty$")
+table_tex = table_tex.replace("NaN", "$\infty$")
+table_tex = table_tex.replace("M1A", "A")
+table_tex = table_tex.replace("M1B", "B")
+table_tex = table_tex.replace("M2A", "A")
+table_tex = table_tex.replace("M2B", "B")
+table_tex = table_tex.replace("Method1", "Method 1")
+table_tex = table_tex.replace("Method2", "Method 2")
+table_tex = table_tex.replace("Dist", "Distance")
+table_tex = table_tex.replace("Mean", "Mean")
+table_tex = table_tex.replace("Var", "Variance")
+table_tex = table_tex.replace("} ", "}")
+with open("table.tex", "w") as f:
+    f.write(table_tex)
