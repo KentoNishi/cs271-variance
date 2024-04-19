@@ -1,4 +1,3 @@
-# all the code is on this one
 import json
 import math
 import numpy as np
@@ -9,20 +8,24 @@ from scipy.interpolate import RegularGridInterpolator
 def read_and_convert(filename):
     with open(filename, 'r') as file:
         data = json.load(file)
-        all_points_list = []
-    def extract_points(data):
+    
+    all_points_list = []
+    paths = []
+    
+    def extract_points(data, current_path=[]):
         if isinstance(data, dict):
-            for value in data.values():
-                extract_points(value)
-        elif isinstance(data, list) and isinstance(data[0], list):
+            for key, value in data.items():
+                extract_points(value, current_path + [key])
+        elif isinstance(data, list) and all(isinstance(item, list) for item in data):
             all_points_list.append(data)
-    extract_points(data)    
-    return all_points_list
+            paths.append(current_path)
+    
+    extract_points(data)
+    return list(zip(paths, all_points_list))
 
-all_queries = read_and_convert('points_data.txt')
 
-def plot(queries):
-
+def plot(queries, path):
+    print(queries)
     # Load means and variances data
     with open('means.json', 'r') as f:
         means_data = json.load(f)
@@ -32,7 +35,6 @@ def plot(queries):
         variances_data = json.load(f)
     variances_matrix = np.array(variances_data)
 
-    # Define geographical boundaries and origin
     btm_left = [42.36020227811244, -71.13409264574024]  # [latitude, longitude]
     top_right = [42.383850169141745, -71.10504224250766]  # [latitude, longitude]
     origin = [42.36340914857679, -71.12589555981565]
@@ -71,7 +73,7 @@ def plot(queries):
         theta2 = center_theta + r_theta
         # plot
         ax.plot([theta1, theta2], [new_rad, new_rad], color='black', linewidth=1)
-
+    
     # plot whiskers
     def plot_whisker(center_rad, center_theta):
         whisker_len = 1.2
@@ -139,6 +141,8 @@ def plot(queries):
 
         # Create polar plot
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+    title = " -> ".join(path)
+    plt.title(title)
 
     # put red dot in middle of plot
     ax.scatter([0], [0], color='red', zorder=5)
@@ -166,10 +170,14 @@ def plot(queries):
     radial_ticks = np.linspace(10, max_rad_ceiled, (max_rad_ceiled // 10) + 1)
     ax.set_ylim(0, max_rad_ceiled)
 
-    plt.show()
+    # plt.show()
+    filename = "_".join(path) + ".png"
+    fig.savefig(filename)
 
-for queries in all_queries:
-    plot(queries)
+
+all_data = read_and_convert('points_data.txt')
+for path, queries in all_data:
+    plot(queries, path)
     print("---")
 
 
