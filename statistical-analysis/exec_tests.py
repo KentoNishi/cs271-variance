@@ -46,14 +46,17 @@ for task in methods:
 
 from scipy.stats import fisher_exact, chi2_contingency
 
+def flip(letter, method):
+    return ("A" if letter == "B" else "B") if method in flip_a_b else letter
+
 table = []
 for i in range(14):
     for j in range(len(methods) - 1):
         for k in range(j + 1, len(methods)):
-            A1 = results[i][methods[j]]["A"]
-            B1 = results[i][methods[j]]["B"]
-            A2 = results[i][methods[k]]["A"]
-            B2 = results[i][methods[k]]["B"]
+            A1 = results[i][methods[j]][flip("A", methods[j])]
+            B1 = results[i][methods[j]][flip("B", methods[j])]
+            A2 = results[i][methods[k]][flip("A", methods[k])]
+            B2 = results[i][methods[k]][flip("B", methods[k])]
             # don't use chi2_contingency since there can be 0 values
             # instead, use fisher's exact test
             # chi2, p, dof, expected = chi2_contingency([[A1, B1], [A2, B2]])
@@ -82,9 +85,6 @@ for i in range(14):
 def get_index(task):
     return tasks.index(task)
 
-def flip(letter, method):
-    return ("A" if letter == "B" else "B") if method in flip_a_b else letter
-
 table_df = pd.DataFrame([{
     **item,
     "Distance": item["Task"][0],
@@ -103,12 +103,39 @@ table_df = pd.DataFrame([{
 table_tex = table_df.to_latex(index=False, columns=["Distance", "Mean", "Variance", "Method1", "Method2", "M1A", "M1B", "M2A", "M2B", "OddsRatio", "PValue"], float_format="%.3f", escape=False)
 # print(table_tex)
 
+# \begin{tabular}{lllllrr}
+# \toprule
+# Distance &  Mean & Variance &               Method1 &                     Method2 &  OddsRatio &  PValue \\
+# \midrule
+#    $A=B$ & $A=B$ &    $A=B$ &              baseline &       isochrone-timecontrol &      1.121 &   1.000 \\
+#    $A=B$ & $A=B$ &    $A=B$ &              baseline & isochrone-confidencecontrol &      1.000 &   1.000 \\
+#    $A=B$ & $A=B$ &    $A=B$ & isochrone-timecontrol & isochrone-confidencecontrol &      0.892 &   1.000 \\
+#    $A=B$ & $A=B$ &    $A<B$ &              baseline &       isochrone-timecontrol &      0.600 &   0.450 \\
+#    $A=B$ & $A=B$ &    $A<B$ &              baseline & isochrone-confidencecontrol &      0.600 &   0.450 \\
+#    $A=B$ & $A=B$ &    $A<B$ & isochrone-timecontrol & isochrone-confidencecontrol &      1.000 &   1.000 \\
+#    $A=B$ & $A<B$ &    $A=B$ &              baseline &       isochrone-timecontrol &      6.526 &   0.003 \\
+# ...
+
+# every block of 3 lines has the same Distance, Mean, and Variance
+# add a \midrule after every block of 3 lines
+# also only keep the middle line for the leftmost 3 columns
 table_lines = table_tex.split("\n")
+for i in range(4, len(table_lines) - 5, 3):
+    table_lines[i + 2] = table_lines[i] + "\\midrule"
+    # table_lines[i] = "   & & &" + "&".join(table_lines[i].split("&")[3:])
+    # table_lines[i + 2] = "   & & &" + "&".join(table_lines[i + 2].split("&")[3:])
+
 # for statistically significant lines, add \rowcolor{lightgray}
-for i, row in enumerate(table):
-    if row["PValue"] < 0.05:
-        table_lines[i + 4] = "\\rowcolor{lightgray} " + table_lines[i + 4]
+for i in range(len(table_lines)):
+    try:
+        p = float(table_lines[i].split("&")[-1].split("\\")[0].strip())
+        if p < 0.05:
+            table_lines[i] = "\\rowcolor{yellow} " + table_lines[i]
+    except ValueError:
+        pass
 
 table_tex = "\n".join(table_lines)
+table_tex = table_tex.replace("tabular", "longtable")
+table_tex = table_tex.replace("lllllrrrrrr", "ccc|ll|cccccc")
 print(table_tex)
 
