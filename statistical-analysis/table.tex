@@ -1,0 +1,48 @@
+\begin{longtable}{ccc||ccc|ccc||c}
+\toprule
+ Distance &  Mean &   Variance &  Method 1 &  A &  B &  Method 2 &  A &  B &  PValue \\
+\midrule
+$A=B$ & $A=B$ & $A=B$ & baseline &   17 &   18 & iso-time &   18 &   17 &   1.000 \\
+$A=B$ & $A=B$ & $A=B$ & baseline &   17 &   18 & iso-conf &   17 &   18 &   1.000 \\
+$A=B$ & $A=B$ & $A=B$ & iso-time &   18 &   17 & iso-conf &   17 &   18 &   1.000 \\
+$A=B$ & $A=B$ & $A<B$ & baseline &   14 &   21 & iso-time &   10 &   25 &   0.450 \\
+$A=B$ & $A=B$ & $A<B$ & baseline &   14 &   21 & iso-conf &   10 &   25 &   0.450 \\
+$A=B$ & $A=B$ & $A<B$ & iso-time &   10 &   25 & iso-conf &   10 &   25 &   1.000 \\
+$A=B$ & $A<B$ & $A=B$ & baseline &   19 &   16 & iso-time &   31 &    4 & \textbf{   0.003 \\}
+$A=B$ & $A<B$ & $A=B$ & baseline &   19 &   16 & iso-conf &   33 &    2 & \textbf{   0.000 \\}
+$A=B$ & $A<B$ & $A=B$ & iso-time &   31 &    4 & iso-conf &   33 &    2 &   0.673 \\
+$A=B$ & $A<B$ & $A>B$ & baseline &   27 &    8 & iso-time &   29 &    6 &   0.766 \\
+$A=B$ & $A<B$ & $A>B$ & baseline &   27 &    8 & iso-conf &   31 &    4 &   0.342 \\
+$A=B$ & $A<B$ & $A>B$ & iso-time &   29 &    6 & iso-conf &   31 &    4 &   0.734 \\
+$A=B$ & $A<B$ & $A<B$ & baseline &   20 &   15 & iso-time &   29 &    6 & \textbf{   0.036 \\}
+$A=B$ & $A<B$ & $A<B$ & baseline &   20 &   15 & iso-conf &   32 &    3 & \textbf{   0.002 \\}
+$A=B$ & $A<B$ & $A<B$ & iso-time &   29 &    6 & iso-conf &   32 &    3 &   0.477 \\
+$A<B$ & $A=B$ & $A=B$ & baseline &   35 &    0 & iso-time &   27 &    8 & \textbf{   0.005 \\}
+$A<B$ & $A=B$ & $A=B$ & baseline &   35 &    0 & iso-conf &   24 &   11 & \textbf{   0.000 \\}
+$A<B$ & $A=B$ & $A=B$ & iso-time &   27 &    8 & iso-conf &   24 &   11 &   0.592 \\
+$A<B$ & $A=B$ & $A>B$ & baseline &   27 &    8 & iso-time &   29 &    6 &   0.766 \\
+$A<B$ & $A=B$ & $A>B$ & baseline &   27 &    8 & iso-conf &   31 &    4 &   0.342 \\
+$A<B$ & $A=B$ & $A>B$ & iso-time &   29 &    6 & iso-conf &   31 &    4 &   0.734 \\
+$A<B$ & $A=B$ & $A<B$ & baseline &   33 &    2 & iso-time &   26 &    9 & \textbf{   0.045 \\}
+$A<B$ & $A=B$ & $A<B$ & baseline &   33 &    2 & iso-conf &   33 &    2 &   1.000 \\
+$A<B$ & $A=B$ & $A<B$ & iso-time &   26 &    9 & iso-conf &   33 &    2 & \textbf{   0.045 \\}
+$A<B$ & $A>B$ & $A=B$ & baseline &   35 &    0 & iso-time &   35 &    0 &   1.000 \\
+$A<B$ & $A>B$ & $A=B$ & baseline &   35 &    0 & iso-conf &   29 &    6 & \textbf{   0.025 \\}
+$A<B$ & $A>B$ & $A=B$ & iso-time &   35 &    0 & iso-conf &   29 &    6 & \textbf{   0.025 \\}
+$A<B$ & $A>B$ & $A>B$ & baseline &   33 &    2 & iso-time &    9 &   26 & \textbf{   0.000 \\}
+$A<B$ & $A>B$ & $A>B$ & baseline &   33 &    2 & iso-conf &    5 &   30 & \textbf{   0.000 \\}
+$A<B$ & $A>B$ & $A>B$ & iso-time &    9 &   26 & iso-conf &    5 &   30 &   0.371 \\
+$A<B$ & $A>B$ & $A<B$ & baseline &   32 &    3 & iso-time &   25 &   10 &   0.062 \\
+$A<B$ & $A>B$ & $A<B$ & baseline &   32 &    3 & iso-conf &   19 &   16 & \textbf{   0.001 \\}
+$A<B$ & $A>B$ & $A<B$ & iso-time &   25 &   10 & iso-conf &   19 &   16 &   0.216 \\
+$A<B$ & $A<B$ & $A=B$ & baseline &   27 &    8 & iso-time &   33 &    2 &   0.084 \\
+$A<B$ & $A<B$ & $A=B$ & baseline &   27 &    8 & iso-conf &   34 &    1 & \textbf{   0.028 \\}
+$A<B$ & $A<B$ & $A=B$ & iso-time &   33 &    2 & iso-conf &   34 &    1 &   1.000 \\
+$A<B$ & $A<B$ & $A>B$ & baseline &   24 &   11 & iso-time &   29 &    6 &   0.265 \\
+$A<B$ & $A<B$ & $A>B$ & baseline &   24 &   11 & iso-conf &   30 &    5 &   0.153 \\
+$A<B$ & $A<B$ & $A>B$ & iso-time &   29 &    6 & iso-conf &   30 &    5 &   1.000 \\
+$A<B$ & $A<B$ & $A<B$ & baseline &   33 &    2 & iso-time &   35 &    0 &   0.493 \\
+$A<B$ & $A<B$ & $A<B$ & baseline &   33 &    2 & iso-conf &   35 &    0 &   0.493 \\
+$A<B$ & $A<B$ & $A<B$ & iso-time &   35 &    0 & iso-conf &   35 &    0 &   1.000 \\
+\bottomrule
+\end{longtable}
