@@ -23,10 +23,10 @@ def shift(x):
     return x * 1024 / 100
 
 # plot the grid
-# plt.imshow(meanTimeGrid, cmap='plasma', interpolation='bilinear')
-# plt.colorbar()
-# plt.title('Mean Time Grid')
-# plt.show()
+plt.imshow(meanTimeGrid, cmap='plasma', interpolation='bilinear')
+plt.colorbar()
+plt.title('Mean Time Grid')
+plt.show()
 
 
 # %%
@@ -36,10 +36,10 @@ with open('varianceTimeGrid.json', 'r') as f:
 
 varianceTimeGrid = np.sqrt(np.array(varianceTimeGrid))
 
-# plt.imshow(varianceTimeGrid, cmap='viridis', interpolation='bilinear')
-# plt.colorbar()
-# plt.title('sqrt(Variance) Time Grid')
-# plt.show()
+plt.imshow(varianceTimeGrid, cmap='viridis', interpolation='bilinear')
+plt.colorbar()
+plt.title('sqrt(Variance) Time Grid')
+plt.show()
 
 # info = {
 #     "origin": origin,
